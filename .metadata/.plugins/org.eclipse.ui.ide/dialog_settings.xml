@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ExternalProjectImportWizard">
+		<item key="WizardProjectsImportPage.STORE_NESTED_PROJECTS" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_CLOSE_CREATED_PROJECTS_ID" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_HIDE_CONFLICTING_PROJECTS_ID" value="false"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="D:\Training\scholarship-project"/>
+			<item value="C:\Users\Pappula.Naidu\Downloads\Student-Application (1)\Student-Application"/>
+			<item value="C:\Users\Pappula.Naidu\Downloads\StudentApplication-microService (1)\StudentApplication-microService"/>
+			<item value="C:\Users\Pappula.Naidu\Downloads\studentRegistration-microservice 2\studentRegistration-microservice\student-registration"/>
+			<item value="C:\Users\Pappula.Naidu\Downloads\studentRegistration-microservice 2\studentRegistration-microservice"/>
+			<item value="C:\Users\Pappula.Naidu\Downloads\institute\institute"/>
+			<item value="C:\Users\Pappula.Naidu\Downloads\studentregistration-service"/>
+			<item value="C:\Users\Pappula.Naidu\Downloads\institute 4\institute"/>
+			<item value="C:\Users\Pappula.Naidu\Downloads\institute 4"/>
+			<item value="C:\Users\Pappula.Naidu\Downloads\studentRegistration-microservice 1"/>
+			<item value="C:\Users\Pappula.Naidu\Downloads\scholarship-project (2) 1\scholarship-project\institute"/>
+			<item value="D:\Training\scholarship-project\eureka-server"/>
+			<item value="D:\Training\scholarship-project\studentRegistration-microservice"/>
+			<item value="D:\Training\scholarship-project\StudentApplication-microService"/>
+			<item value="D:\Training\scholarship-project\nodal-officer-portal-service"/>
+			<item value="D:\Training\scholarship-project\Ministry-service"/>
+			<item value="D:\Training\scholarship-project\institute-service"/>
+			<item value="D:\Training\scholarship-project\student-microService"/>
+			<item value="D:\Training\scholarship-project\nodal-officer-portal"/>
+			<item value="D:\Training\scholarship-project\institute-1"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+		<section name="ExternalProjectImportWizard.dialogBounds">
+			<item key="DIALOG_X_ORIGIN" value="534"/>
+			<item key="DIALOG_Y_ORIGIN" value="11"/>
+			<item key="DIALOG_WIDTH" value="875"/>
+			<item key="DIALOG_HEIGHT" value="1008"/>
+			<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		</section>
+	</section>
+</section>

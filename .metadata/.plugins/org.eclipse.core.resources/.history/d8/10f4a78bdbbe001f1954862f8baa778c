@@ -1,0 +1,57 @@
+package com.coforge.project.state.controller;
+
+import java.util.Map;
+
+/**
+*Author:Koppula.Reddy
+*date:Dec 13, 2024
+*time:8:20:00 PM
+*project:nodal-officer-portal
+
+**/
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.coforge.project.state.model.StateNodalOfficer;
+import com.coforge.project.state.service.StateNodalOfficerService;
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/state")
+public class StateNodalOfficerController {
+
+    @Autowired
+    private StateNodalOfficerService stateNodalOfficerService;
+
+    @PostMapping("/officers/register")
+    public ResponseEntity<StateNodalOfficer> registerOfficer(@RequestBody StateNodalOfficer officer) {
+        StateNodalOfficer registeredOfficer = stateNodalOfficerService.registerOfficer(officer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(registeredOfficer);
+    }
+
+    @PostMapping("/officers/login")
+    public ResponseEntity<String> loginOfficer(@RequestBody StateNodalOfficer loginRequest) {
+        boolean authenticated = stateNodalOfficerService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+        if (authenticated) {
+            return ResponseEntity.ok("Login successful!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials!");
+        }
+    }
+    @PostMapping("/officers/update-password")
+    public ResponseEntity<String> updatePassword(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String newPassword = request.get("newPassword");
+        boolean updated = stateNodalOfficerService.updatePassword(username, newPassword);
+        if (updated) {
+            return ResponseEntity.ok("Password updated successfully!");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
+        }
+    }
+}
+

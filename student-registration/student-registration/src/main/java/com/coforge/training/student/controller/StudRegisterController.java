@@ -1,0 +1,108 @@
+
+package com.coforge.training.student.controller;
+
+import java.io.IOException;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.coforge.training.student.model.Details;
+import com.coforge.training.student.repository.StudRegisterRepository;
+import com.coforge.training.student.service.StudRegisterService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+/*
+*Author:Jeedipalli.Reddy
+*Date:12 Dec 2024
+*Time:3:54:01 pm
+*Project:student-registration
+*/
+
+@RestController
+@RequestMapping("/api/registration")
+public class StudRegisterController {
+    @Autowired
+    private StudRegisterService service;
+    @Autowired
+    private StudRegisterRepository detailsRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @PostMapping("/register")
+    public ResponseEntity<Details> registerUser(
+            @RequestPart("details") String detailsJson,
+            @RequestPart("Aadhar") MultipartFile aadhar,
+            @RequestPart("photograph") MultipartFile photograph,
+            @RequestPart("idCard") MultipartFile idCard,
+            @RequestPart("casteCertificate") MultipartFile casteCertificate,
+            @RequestPart("incomeCertificate") MultipartFile incomeCertificate,
+            @RequestPart("Bankpassbook") MultipartFile bankpassbook,
+            @RequestPart("SSCmarksheet") MultipartFile sscMarksheet,
+            @RequestPart("Intermediatemarksheet") MultipartFile intermediateMarksheet) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Details details = objectMapper.readValue(detailsJson, Details.class);
+
+            details.setAadhar(aadhar.getBytes());
+            details.setPhotograph(photograph.getBytes());
+            details.setIdCard(idCard.getBytes());
+            details.setCasteCertificate(casteCertificate.getBytes());
+            details.setIncomeCertificate(incomeCertificate.getBytes());
+            details.setBankpassbook(bankpassbook.getBytes());
+            details.setSSCmarksheet(sscMarksheet.getBytes());
+            details.setIntermediatemarksheet(intermediateMarksheet.getBytes());
+
+            Details savedDetails = service.registerUser(details);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedDetails);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    @GetMapping("/user/{email}")
+    public ResponseEntity<Details> getUserByEmail(@PathVariable String email) {
+        Details user = service.findByEmail(email);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    
+ // Authenticate Institute login
+    @PostMapping("/login")
+    public ResponseEntity<String> authenticateInstitute(@RequestBody Details loginRequest) {
+        Details details = detailsRepository.findByEmail(loginRequest.getEmail());
+        if (details != null && passwordEncoder.matches(loginRequest.getPassword(), details.getPassword())) {
+            return ResponseEntity.ok("Login successful!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials!");
+        }
+    }
+    
+    @PostMapping("/student/update-password")
+    public ResponseEntity<String> updatePassword(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("email");
+            String newPassword = request.get("newPassword");
+            boolean updated = service.updatePassword(email, newPassword);
+            if (updated) {
+                return ResponseEntity.ok("Password updated successfully!");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+    }
+
+
+}
+

@@ -1,0 +1,5 @@
+package com.coforge.training.studentapp.exception;
+
+public class ServiceUnavailableException {
+
+}

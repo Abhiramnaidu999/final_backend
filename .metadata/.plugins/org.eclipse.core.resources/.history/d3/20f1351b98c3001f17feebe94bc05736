@@ -1,0 +1,48 @@
+package com.coforge.training.studentapp.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.coforge.training.student.model.Details;
+import com.coforge.training.studentapp.model.StudentApplication;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
+@Service
+public class CompareAdhar {
+	@Autowired
+	private StudentAppService sService;
+	
+	@Autowired
+	private StudentClient rService;
+	@CircuitBreaker(name = "productService", fallbackMethod = "fallbackCompareAadharData")
+	public boolean compareAadharData(String adhar) {
+        // Fetch Details from the other microservice
+        ResponseEntity<Details> response = rService.getByAadhar(adhar);
+        Details details = response.getBody();
+
+        // Fetch Students from the current microservice
+        List<StudentApplication> students = sService.getStudentByAadhar(adhar);
+
+        // Assuming you want to compare the first student with the details
+        if (students.isEmpty() || details == null) {
+            return false;
+        }
+
+        StudentApplication student = students.get(0);
+
+        // Compare relevant fields (e.g., aadharNumber)
+        return student.getAadharNumber().equals(details.getAdhar());
+    }
+	
+	public boolean fallbackCompareAadharData(String adhar, Throwable t) {
+        // Log the error or handle it as needed
+        System.err.println("Fallback method called due to: " + t.getMessage());
+        // Return a default response or throw an exception
+        throw new ServiceUnavailableException("Service is currently unavailable. Please try again later.");
+    }
+
+}
